@@ -1,232 +1,134 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="Product.aspx.cs" Inherits="Project.Admin.Product" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User/User.Master" AutoEventWireup="true" CodeBehind="Product.aspx.cs" Inherits="Project.User.Product" %>
+
 <%@ Import Namespace="Project" %>
 
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-
-    <script>
-    /*for disappearing alert message*/
-    window.onload = function () {
-        var seconds = 5;
-        setTimeout(function () {
-            document.getElementById("<%=lblMsg.ClientID %>").style.display = "none";
-        }, seconds * 1000);
-    };
-</script>
-<script>
-    function ImagePreview(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#<%=imgProduct.ClientID %>').prop('src', e.target.result)
-                    .width(200)
-                    .height(200);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
-    <div class="pcoded-inner-content pt-0">
-     <div class="align-align-self-end">
-         <asp:Label ID="lblMsg" runat="server" Visible="false"></asp:Label>
-     </div>
-    <div class="main-body">
-        <div class="page-wrapper">
-            <div class="page-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-block">
-                            <div class="row">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-                                <div class="col-sm-6 col-md-4 col-lg-4">
-                                    <h4 class="sub-title">Product</h4>
-                                     <div>
-                                                 <div class="form-group">
-                                                     <label>Product Name</label>
-                                                     <div>
-                                                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control"
-                                                             placeholder="Enter Product Name" ></asp:TextBox>
-                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                                                             ErrorMessage="Name is required" ControlToValidate="txtName" Display="Dynamic" 
-                                                             ForeColor="Red" SetFocusOnError="True">
-                                                         </asp:RequiredFieldValidator>
-                                                         <asp:HiddenField ID="hdnId" runat="server" Value="0" />
-                                                     </div>
-                                                 </div>
+    
+    <!-- Product Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                 <div class="align-self-end">
+                     <asp:Label ID="lblMsg" runat="server" Visible="False" ></asp:Label>
+                 </div>
+                <p class="section-title bg-white text-center text-primary px-3">Our Products</p>
+                <h1 class="mb-5">Our Dairy Products For Healthy Living</h1>
+            </div>
 
-                                                 <div class="form-group">
-                                                     <label>Product Description</label>
-                                                     <div>
-                                                         <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control"
-                                                             placeholder="Enter Product Description" TextMode="MultiLine" ></asp:TextBox>
-                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                                                             ErrorMessage=" Description is required" ControlToValidate="txtDescription" Display="Dynamic" 
-                                                             ForeColor="Red" SetFocusOnError="True">
-                                                         </asp:RequiredFieldValidator>
-             
-                                                     </div>
-                                                 </div>
+            <ul class="filters_menu">
+                <li class="active" data-filter="*">All</li>
+                <asp:Repeater ID="rCategory" runat="server" >
+                    <ItemTemplate>
+                        <%--<li data-filter=".<%# Regex.Replace(Eval("Name").ToString().ToLower(),@"\s", "") %>">
+                            data-id="<%# Eval("CategoryId") %>"   <%# Eval("Name") %></li>--%>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </ul>
 
-                                                 <div class="form-group">
-                                                     <label>Product Price(Rs)</label>
-                                                     <div>
-                                                         <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control"
-                                                             placeholder="Enter Product Price" ></asp:TextBox>
-                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
-                                                             ErrorMessage=" Price is required" ControlToValidate="txtPrice" Display="Dynamic" 
-                                                             ForeColor="Red" SetFocusOnError="True">
-                                                         </asp:RequiredFieldValidator>
-                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
-                                                             ErrorMessage="Price must be decimal" ControlToValidate="txtPrice" Display="Dynamic" ForeColor="Red" SetFocusOnError="True" 
-                                                             ValidationExpression="^\d{0,8}(\.\d{1,4})?$" >
-                                                         </asp:RegularExpressionValidator>
-        
-                                                     </div>
-                                                 </div>     
-     
-                                                  <div class="form-group">
-                                                      <label>Product Quantity</label>
-                                                      <div>
-                                                          <asp:TextBox ID="txtQuantity" runat="server" CssClass="form-control"
-                                                              placeholder="Enter Product Quantity" ></asp:TextBox>
+            <div class="row gx-4">
 
-                                                          <asp:requiredfieldvalidator id="requiredfieldvalidator4" runat="server" 
-                                                              errormessage=" quantity is required" controltovalidate="txtquantity" display="dynamic" 
-                                                              forecolor="red" setfocusonerror="true">
-                                                          </asp:requiredfieldvalidator>
-                                                         <asp:regularexpressionvalidator id="regularexpressionvalidator2" runat="server" 
-                                                              errormessage="quantity must be non nagetive " controltovalidate="txtquantity" display="dynamic" forecolor="red" setfocusonerror="true" 
-                                                              validationexpression="^([1-9]\d*|0)$" >
-                                                          </asp:regularexpressionvalidator>
-        
-                                                      </div>
-                                                  </div>                                           
-                                                 <div class="form-group">
-                                                     <label>Product Image</label>
-                                                     <div>
-                                                         <asp:FileUpload ID="fuProductImage" runat="server" CssClass="form-control"
-                                                             onchange="ImagePreview(this);" />
-                                                     </div>
-                                                 </div>
-
-                                                   <div class="form-group">
-                                                       <label>Product Category</label>
-                                                       <div>
-                                                           <asp:DropDownList ID="ddlCategory" runat="server" CssClass="form-control" 
-                                                               DataSourceID="SqlDataSource1" DataTextField="Name" DataValueField="CategoryId"
-                                                               AppendDataBoundItems="True">
-                                                               <asp:ListItem Value="0">Select Category</asp:ListItem>
-                                                           </asp:DropDownList>
-                                                           <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" 
-                                                               ErrorMessage=" Category is required" ControlToValidate="ddlCategory" Display="Dynamic" 
-                                                               ForeColor="Red" SetFocusOnError="True">
-                                                           </asp:RequiredFieldValidator>
-                                                           <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString='<%$ ConnectionStrings:cs %>'
-                                                               SelectCommand="SELECT [CategoryId], [Name] FROM [Categories]"></asp:SqlDataSource>
-          
-                                                       </div>
-                                                   </div>
+                 <asp:Repeater 
+                     ID="rProduct" runat="server" OnItemCommand="rProduct_ItemCommand">
+                 <ItemTemplate>
+                     <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp <%# Eval("CategoryName").ToString().ToLower() %>" data-wow-delay="0.1s">
+                     
+                         <div class="product-item">
+                         
+                             <div class="position-relative">
+                             
+                                 <img class="img-fluid" src="<%# Utils.GetImageUrl(Eval("ImageURL")) %>" alt="" height="200" width="300">
+                                 <div class="product-overlay">
+                                     <asp:LinkButton ID="lbAddToCart" runat="server" CommandName="addToCart"
+                                         CommandArgument='<%# Eval("ProductId") %>' CssClass="btn btn-square btn-secondary rounded-circle m-1">
+                                         <i class="bi bi-cart"></i>
+                                     </asp:LinkButton>
+                                 </div>
+                             </div>
+                             <div class="text-center p-4">
+                                 <a class="d-block h5" href=""> <%# Eval("Name") %> </a>
+                                 <p> <%# Eval("Description") %> </p>
+                                 <%--<span class="text-decoration-line-through">$19.00</span>--%>
+                                 <span class="text-primary me-1 bg-black">Rs. <%# Eval("Price") %> </span>
+                             </div>
+                         </div>
+                     </div>
+                 </ItemTemplate>
+             </asp:Repeater>
 
 
-                                                 <div class="form-check pl-4">
-                                                     <asp:CheckBox ID="cbIsActive" runat="server" Text="&nbsp; IsActive"
-                                                         CssClass="form-check-input" />
-                                                 </div>
 
-                                                 <div class="pd-5">
-                                                     <asp:Button ID="btnAddOrUpdate" runat="server" Text="Add" CssClass="btn btn-primary" 
-                                                         OnClick="btnAddOrUpdate_Click"/>
-                                                     &nbsp;
-                                                     <asp:Button ID="btnClear" runat="server" Text="Clear" CssClass="btn btn-primary" 
-                                                         CausesValidation ="false" OnClick="btnClear_Click" />
-                                                 </div>              
-
-                                                 <div>
-                                                     <asp:Image ID="imgProduct" runat="server" CssClass="img-thumbnail" />
-                                                 </div>
-                                             </div>
-                                </div>
-                                <div class="col-sm-6 col-md-8 col-lg-8 mobile-inputs">
-                                    <h4 class="sub-title">Category Lists</h4>
-                                    <div class="card-block table-border-style">
-                                        <div class="table-responsive">
-
-                                            <asp:Repeater ID="rProduct" runat="server" OnItemCommand="rProduct_ItemCommand"
-                                                 OnItemDataBound="rProduct_ItemDataBound">
-
-                                                <HeaderTemplate>
-                                                    <table class="table data-table-export table-hover nowrap">
-                                                        <thead>
-                                                        
-                                                        <tr>
-                                                            <th class="table-plus">Name</th>
-                                                            <th>Image</th>
-                                                            <th>Prie(Rs)</th>
-                                                            <th>Qty</th>
-                                                            <th>Category</th>
-                                                            <th>IsActive</th>
-                                                            <th>Description</th>
-                                                            <th>CreateDate</th>
-                                                            <th class="datatable-nosort">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                        <tbody>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td class="table-plus"> <%# Eval("Name") %></td>
-
-                                                        <td>
-                                                            <img alt=""  width="40" src=" <%# Utils.GetImageUrl( Eval("ImageUrl")) %>" />
-                                                        </td>
-
-                                                        <td> <%# Eval("Price") %></td>
-
-                                                         <td> 
-                                                              <asp:Label ID="lblQuantity" runat="server" Text='<%# Eval("Quantity") %>'></asp:Label>
-                                                         </td>
-
-                                                         <td> <%# Eval("CategoryName") %></td>
-
-                                                        <td> 
-                                                             <asp:Label ID="lblIsActive" runat="server" Text='<%# Eval("IsActive") %>'></asp:Label>
-                                                        </td>
-
-                                                        <td> <%# Eval("Description") %></td>
-
-                                                        <td> <%# Eval("CreatedDate") %></td>
-
-                                                         <td>
-                                                             <asp:LinkButton ID="lnkEdit" runat="server" Text="Edit" CssClass="badge badge-primary" CausesValidation="false"
-                                                                 CommandArgument='<%# Eval("ProductId") %>' CommandName="edit">
-                                                                     <i class="ti-pencil"></i>
-                                                             </asp:LinkButton>
-                                                             <asp:LinkButton ID="lnkDelete" Text="Delete" runat="server" CommandName="delete"
-                                                                 CssClass="badge bg-danger" CommandArgument='<%# Eval("ProductId") %>'
-                                                                 OnClientClick="return Confirm('Do you want to delete this Product?');" CausesValidation="false">
-                                                                     <i class="ti-trash"></i>
-                                                             </asp:LinkButton>
-                                                       </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                                <FooterTemplate>
-                                                    </tbody>
-                                                    </table>
-                                                </FooterTemplate>  
-                                            </asp:Repeater>
-                                        </div>
-                                    </div>
-                                </div>
+               <%-- <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="product-item">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="img/product-1.jpg" alt="">
+                            <div class="product-overlay">
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-link"></i></a>
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-cart"></i></a>
                             </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <a class="d-block h5" href="">Pure Milk</a>
+                            <span class="text-primary me-1">$19.00</span>
+                            <span class="text-decoration-line-through">$29.00</span>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="product-item">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="img/product-2.jpg" alt="">
+                            <div class="product-overlay">
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-link"></i></a>
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-cart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <a class="d-block h5" href="">Fresh Meat</a>
+                            <span class="text-primary me-1">$19.00</span>
+                            <span class="text-decoration-line-through">$29.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="product-item">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="img/product-3.jpg" alt="">
+                            <div class="product-overlay">
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-link"></i></a>
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-cart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <a class="d-block h5" href="">Dairy Products</a>
+                            <span class="text-primary me-1">$19.00</span>
+                            <span class="text-decoration-line-through">$29.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="product-item">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="img/product-4.jpg" alt="">
+                            <div class="product-overlay">
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-link"></i></a>
+                                <a class="btn btn-square btn-secondary rounded-circle m-1" href=""><i class="bi bi-cart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <a class="d-block h5" href="">Organic Food</a>
+                            <span class="text-primary me-1">$19.00</span>
+                            <span class="text-decoration-line-through">$29.00</span>
+                        </div>
+                    </div>
+                </div>--%>
+
+
             </div>
         </div>
     </div>
-</div>
+    <!-- Product End -->
+
 </asp:Content>
